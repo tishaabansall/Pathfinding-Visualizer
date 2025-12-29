@@ -22,5 +22,15 @@ It demonstrates how shortest paths are explored and constructed in a weighted gr
 1. Clone the repository:
    ```bash
    git clone https://github.com/<your-username>/grid-pathfinding-visualizer.git
+   ```
+2. Install required packages:
+```bash
 pip install -r requirements.txt
+  ```
+3. Run the visualizer:
+```bash
 python pathfinding_visualizer.py
+```
+## License
+This project is licensed under the MIT License.
+
