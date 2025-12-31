@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import heapq
 from matplotlib.animation import FuncAnimation
 
-# ================= CONFIG =================
 GRID_SIZE = 20
 anim = None
 
@@ -18,13 +17,12 @@ end = None
 steps = []
 nodes_explored = 0
 
-# ================= COLORS =================
 START_END_COLOR = 30
 VISITED_COLOR = 15
-PATH_COLOR = 25
+PATH_COLOR = 22
 TRAFFIC_COLORS = {1:1, 5:5, 10:10}  # mapping for display
 
-# ================= PLOT =================
+# plot
 fig, ax = plt.subplots()
 im = ax.imshow(display_grid, cmap="YlOrRd", vmin=1, vmax=25)
 info_text = ax.text(
@@ -36,7 +34,7 @@ info_text = ax.text(
     color="black"
 )
 
-# ================= HELPERS =================
+
 def get_neighbors(node):
     r, c = node
     neighbors = []
@@ -49,7 +47,7 @@ def get_neighbors(node):
 def heuristic(a, b):
     return abs(a[0]-b[0]) + abs(a[1]-b[1])
 
-# ================= DIJKSTRA =================
+# DIJKSTRA 
 def dijkstra_steps(start_node, end_node):
     global nodes_explored
     nodes_explored = 0
@@ -77,7 +75,7 @@ def dijkstra_steps(start_node, end_node):
                 prev[nbr] = node
                 heapq.heappush(pq, (new_cost, nbr))
 
-    # Reconstruct path
+    # Reconstructing path
     node = end_node
     path = []
     while node in prev:
@@ -92,7 +90,7 @@ def dijkstra_steps(start_node, end_node):
     print(f"Dijkstra → Nodes explored: {nodes_explored}")
     return local_steps
 
-# ================= A* =================
+# A*
 def astar_steps(start_node, end_node):
     global nodes_explored
     nodes_explored = 0
@@ -121,7 +119,7 @@ def astar_steps(start_node, end_node):
                 f = tentative + heuristic(nbr, end_node)
                 heapq.heappush(pq, (f, nbr))
 
-    # Reconstruct path
+    # Reconstructing path
     node = end_node
     path = []
     while node in prev:
@@ -136,7 +134,7 @@ def astar_steps(start_node, end_node):
     print(f"A* → Nodes explored: {nodes_explored}")
     return local_steps
 
-# ================= ANIMATION =================
+# ANIMATION
 def animate(i):
     if i >= len(steps):
         return
@@ -148,7 +146,6 @@ def animate(i):
     elif action == "path" and cell != start and cell != end:
         display_grid[r, c] = PATH_COLOR
 
-    # Highlight start/end with same color
     if start:
         display_grid[start] = START_END_COLOR
     if end:
@@ -156,7 +153,7 @@ def animate(i):
 
     im.set_data(display_grid)
 
-# ================= INTERACTION =================
+# user-interactive
 def onclick(event):
     global start, end, weight_grid, display_grid
     if event.inaxes != ax:
@@ -203,7 +200,6 @@ def onkey(event):
         im.set_data(display_grid)
         plt.draw()
 
-# ================= BIND =================
 fig.canvas.mpl_connect("button_press_event", onclick)
 fig.canvas.mpl_connect("key_press_event", onkey)
 plt.title(
